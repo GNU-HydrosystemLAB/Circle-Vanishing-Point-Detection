@@ -2,6 +2,7 @@
 This is a project to detect vanishing points in an image taken inside a pipes.
 
 # Requirements
+The experiments were conducted in the following environment
 | list  | Version |
 | ------------- | ------------- |
 | python  | 3.11.7  |
