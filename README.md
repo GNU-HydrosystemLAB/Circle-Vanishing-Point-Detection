@@ -36,7 +36,7 @@ To see the scatter of vanishing point coordinates
 ```ruby
 VP_Detection.vp_scatter(data=v_F_dF)
 ```
-
+![20240515_125243](https://github.com/GNU-HydrosystemLAB/Circle-Vanishing-Point-Detection/assets/169818638/bf9c4cbc-b18f-43dc-9abd-3253b3b72ca3)
 We apply a filter for vanishing point coordinates with high stochastic frequency and select one vanishing point that is closest to the normalized average value of dR and slope, which are key parameters for vanishing point formation.
 ```ruby
 SdR_F_dF = VP_Detection.vp_filter(data=v_F_dF)
