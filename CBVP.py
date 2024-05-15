@@ -2,15 +2,12 @@ import cv2
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from ultralytics import YOLO
 from skimage import feature, transform, io
-from itertools import product
 from itertools import permutations
-from itertools import combinations
-import matplotlib.gridspec as gridspec
 from matplotlib.ticker import FormatStrFormatter
 from PIL import Image
 import vp_utill
+
 
 
 plt.rcParams['font.family'] = 'Times New Roman'
@@ -18,7 +15,7 @@ plt.rcParams['font.family'] = 'Times New Roman'
 
 class Vanishing_Point:
     def __init__(self, image_path, dist, mtx):
-        self.master_bin = 10
+        self.master_bin = 100
         self.image_path = image_path
         self.real_pipe_D = 83.6
         self.unit = ['mm','mm2']
@@ -418,29 +415,6 @@ class Vanishing_Point:
         return slope_mean, dR_mean, closest_data
 
 
-    def YOLO_mask(self):
-        results = self.model.predict(source=self.undist_image, show=False, conf=0.25,retina_masks=True, boxes=False,save=False)
-
-        masks = results[0].masks
-        masks_np = masks.data.cpu().numpy()  # GPU에서 CPU로 이동한 후 numpy 배열로 변환
-        num_masks = masks_np.shape[0]  # 마스크 개수
-
-        combined_mask = np.zeros_like(masks_np[0])  # 결합된 마스크를 저장할 배열
-
-        # 각 마스크를 이진 이미지로 변환하여 결합
-        for i in range(num_masks):
-            mask = masks_np[i]  # i번째 마스크
-            combined_mask[mask > 0.5] = 255
-        combined_mask = combined_mask.astype(np.uint8)
-        self.mask = combined_mask
-        
-        moments = cv2.moments(combined_mask)
-        x = int(moments["m10"] / moments["m00"]) if moments["m00"] != 0 else None
-        y = int(moments["m01"] / moments["m00"]) if moments["m00"] != 0 else None
-
-        self.mask_m_c = [x, y]
-        #io.imsave('mask.png', self.mask)
-        
     def interest_length(self):
         edge = feature.canny(self.mask)
         # Find the circle with the smallest radius containing the most edge pixels
